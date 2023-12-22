@@ -11,11 +11,11 @@ enum ButtonSize {
 interface ButtonProps {
   children: string;
   type?: 'button' | 'submit';
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   outline?: boolean;
   primary?: boolean;
-  size: keyof typeof ButtonSize;
+  size?: keyof typeof ButtonSize;
 }
 
 const Button = ({
