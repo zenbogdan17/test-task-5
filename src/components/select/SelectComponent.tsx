@@ -1,21 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Badge from '../badge/Badge';
 import axios from 'axios';
 import PokemonList from './PokemonList';
 import { PokemonListType, PokemonType } from '../../types';
 
 interface SelectComponentProps {
-  label: string;
   disabled?: boolean;
+  handlerSelectedPokemon: (item: PokemonType[]) => void;
+  selectError?: boolean;
 }
 
-const SelectComponent = ({ label, disabled }: SelectComponentProps) => {
+const SelectComponent = ({
+  disabled,
+  handlerSelectedPokemon,
+  selectError,
+}: SelectComponentProps) => {
   const [limitItem, setLimitItem] = useState(20);
   const [pokemonList, setPokemonList] = useState<PokemonListType | null>(null);
   const [errorSelect, setErrorSelect] = useState<string | null>(null);
   const [selectItem, setSelectItem] = useState<{ name: string; url: string }[]>(
     []
   );
+
+  useEffect(() => {
+    if (selectError) {
+      setErrorSelect('Please select 4 pokemon');
+    } else {
+      setErrorSelect(null);
+    }
+  }, [selectError]);
+
+  useEffect(() => {
+    handlerSelectedPokemon(selectItem);
+  }, [selectItem]);
 
   const handlerFetchData = () => {
     axios
@@ -52,7 +69,9 @@ const SelectComponent = ({ label, disabled }: SelectComponentProps) => {
   return (
     <div className="mb-5">
       <div className="flex flex-col gap-2">
-        <label className="block text-sm font-medium leading-6 ">{label}</label>
+        <label className="block text-sm font-medium leading-6 ">
+          Select pokemon
+        </label>
         <div
           className={`flex items-center border border-gray-400 gap-1 w-[400px] h-10 rounded-lg py-2 px-4 relative
           ${!disabled && 'hover:ring-2 hover:ring-indigo-500'}

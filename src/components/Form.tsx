@@ -1,19 +1,42 @@
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  FieldErrors,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
 import Input from './input/Input';
 import Button from './button/Button';
 import SelectComponent from './select/SelectComponent';
+import { PokemonType } from '../types';
+import { useState } from 'react';
 
 const Form = () => {
+  const [selectError, setSelectError] = useState(false);
+
   const {
     register,
     handleSubmit,
+    setValue,
+    setError,
+    watch,
     formState: { errors },
   } = useForm<FieldValues>({
-    defaultValues: { name: '', lastName: '' },
+    defaultValues: { name: '', lastName: '', selectedPokemon: undefined },
   });
 
+  const selectedPokemon = watch('selectedPokemon');
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (selectedPokemon.length < 4) {
+      setSelectError(true);
+      return;
+    }
     console.log(data);
+  };
+
+  const handlerSelectedPokemon = (item: PokemonType[]) => {
+    setValue('selectedPokemon', item);
+    setSelectError(false);
   };
 
   return (
@@ -43,7 +66,12 @@ const Form = () => {
           />
         </div>
 
-        <SelectComponent label="Select pokemon" />
+        <SelectComponent
+          selectError={selectError}
+          handlerSelectedPokemon={(item: PokemonType[]) =>
+            handlerSelectedPokemon(item)
+          }
+        />
 
         <Button type="submit" size="lg" primary>
           {'Send'}
