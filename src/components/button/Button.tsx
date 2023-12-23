@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 enum ButtonSize {
   xs = 'xs',
@@ -9,7 +9,7 @@ enum ButtonSize {
 }
 
 interface ButtonProps {
-  children: string;
+  children: ReactNode;
   type?: 'button' | 'submit';
   onClick?: () => void;
   disabled?: boolean;

@@ -21,13 +21,48 @@ const Input = ({
   label,
   subtitle,
   id,
-  type,
+  type = 'string',
   placeholder,
   required,
   register,
   errors,
   disabled,
 }: InputProps) => {
+  let validationRules: Record<string, any> = {
+    required: 'This field is require',
+  };
+
+  if (type === 'string') {
+    validationRules = {
+      ...validationRules,
+      minLength: {
+        value: 2,
+        message: `${label} must be at least 2 characters long`,
+      },
+      maxLength: {
+        value: 12,
+        message: `${label} must be at most 12 characters long`,
+      },
+      pattern: {
+        value: /^[a-zA-Z]+$/,
+        message: 'Only characters from a-z and A-Z are accepted',
+      },
+    };
+  } else if (type === 'number') {
+    validationRules = {
+      ...validationRules,
+      valueAsNumber: true,
+      min: {
+        value: 0,
+        message: `${label} must not be less than 0`,
+      },
+      max: {
+        value: 1000,
+        message: `${label} must not be greater than 1000`,
+      },
+    };
+  }
+
   return (
     <div>
       <div className="flex flex-col gap-2">
@@ -39,21 +74,7 @@ const Input = ({
           type={type}
           autoComplete={id}
           disabled={disabled}
-          {...register(id, {
-            required,
-            minLength: {
-              value: 2,
-              message: `${label} must be at least 2 characters long`,
-            },
-            maxLength: {
-              value: 12,
-              message: `${label} must be at most 12 characters long`,
-            },
-            pattern: {
-              value: /^[a-zA-Z]+$/,
-              message: 'Only characters from a-z and A-Z are accepted',
-            },
-          })}
+          {...register(id, validationRules)}
           placeholder={placeholder}
           className={`w-[400px] h-10 rounded-lg py-3 px-4 gap-2 
           placeholder:text-gray-400 placeholder:text-sm 

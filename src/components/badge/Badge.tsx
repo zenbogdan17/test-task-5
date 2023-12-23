@@ -3,10 +3,16 @@ import React, { useState } from 'react';
 interface BadgeProps {
   label: string;
   handlerClick?: () => void;
+  handlerClickOnClose?: () => void;
   forViewing?: boolean;
 }
 
-const Badge = ({ label, handlerClick, forViewing }: BadgeProps) => {
+const Badge = ({
+  label,
+  handlerClickOnClose,
+  handlerClick,
+  forViewing,
+}: BadgeProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -22,7 +28,7 @@ const Badge = ({ label, handlerClick, forViewing }: BadgeProps) => {
         {label}
         {forViewing || (
           <svg
-            onClick={() => {}}
+            onClick={handlerClickOnClose}
             className={`w-5 h-5 text-white absolute right-1 top-[7px]  ${
               isHovered ? 'block' : 'hidden'
             }`}

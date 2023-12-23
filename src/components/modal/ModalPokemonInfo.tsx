@@ -8,7 +8,7 @@ import Button from '../button/Button';
 interface ModalPokemonInfoProps {
   onClose: () => void;
   pokemonUrl: string;
-  addPokemon: ({}: PokemonType) => void;
+  addPokemon?: ({}: PokemonType) => void;
 }
 
 const ModalPokemonInfo = ({
@@ -61,7 +61,7 @@ const ModalPokemonInfo = ({
               <p className=" text-gray-600 text-lg border-b-2">Abilities: </p>
 
               {pokemonInfo?.abilities.map((item, i) => (
-                <h2 key={item.ability.name} className="text-center">
+                <h2 key={i} className="text-center">
                   {firstLetterInCapital(item.ability.name)}{' '}
                   {i !== pokemonInfo?.abilities.length - 1 && ','}
                 </h2>
@@ -95,7 +95,7 @@ const ModalPokemonInfo = ({
               <p className=" text-gray-600 text-lg border-b-2">Stats: </p>
 
               {pokemonInfo?.stats.map((item, i) => (
-                <h2 key={item.base_stat} className="text-center">
+                <h2 key={i} className="text-center">
                   {item.base_stat} {item.stat.name}
                   {i !== pokemonInfo?.stats.length - 1 && ','}
                 </h2>
@@ -114,19 +114,20 @@ const ModalPokemonInfo = ({
             </div>
           </div>
         </div>
-
-        <div className="flex justify-center">
-          <Button
-            onClick={() => {
-              onClose();
-              addPokemon({ name: pokemonInfo?.name ?? '', url: pokemonUrl });
-            }}
-            size="lg"
-            primary
-          >
-            Add Pokemon
-          </Button>
-        </div>
+        {addPokemon && (
+          <div className="flex justify-center">
+            <Button
+              onClick={() => {
+                onClose();
+                addPokemon({ name: pokemonInfo?.name ?? '', url: pokemonUrl });
+              }}
+              size="lg"
+              primary
+            >
+              Add Pokemon
+            </Button>
+          </div>
+        )}
       </div>
     </Modal>
   );

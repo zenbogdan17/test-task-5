@@ -3,6 +3,8 @@ import Badge from '../badge/Badge';
 import axios from 'axios';
 import PokemonList from './PokemonList';
 import { PokemonListType, PokemonType } from '../../types';
+import Button from '../button/Button';
+import FilterModal from '../modal/FilterModal';
 
 interface SelectComponentProps {
   disabled?: boolean;
@@ -16,11 +18,13 @@ const SelectComponent = ({
   selectError,
 }: SelectComponentProps) => {
   const [limitItem, setLimitItem] = useState(20);
+  const [offset, setOffset] = useState(0);
   const [pokemonList, setPokemonList] = useState<PokemonListType | null>(null);
   const [errorSelect, setErrorSelect] = useState<string | null>(null);
   const [selectItem, setSelectItem] = useState<{ name: string; url: string }[]>(
     []
   );
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   useEffect(() => {
     if (selectError) {
@@ -36,7 +40,9 @@ const SelectComponent = ({
 
   const handlerFetchData = () => {
     axios
-      .get(`https://pokeapi.co/api/v2/pokemon?limit=${limitItem}`)
+      .get(
+        `https://pokeapi.co/api/v2/pokemon?limit=${limitItem}&offset=${offset}`
+      )
       .then(({ data }) => {
         setPokemonList(data);
       })
@@ -45,6 +51,10 @@ const SelectComponent = ({
       })
       .finally(() => {});
   };
+
+  useEffect(() => {
+    handlerFetchData();
+  }, [limitItem, offset]);
 
   const handlerAddPokemon = (item: PokemonType) => {
     if (selectItem.length === 4) {
@@ -62,65 +72,99 @@ const SelectComponent = ({
     setSelectItem((prev) => [...prev, item]);
   };
 
-  const handlerDeletePokemon = (item: PokemonType) => {
+  const handleBadgeClick = () => {};
+
+  const handleBadgeClose = (item: PokemonType) => {
     setSelectItem((prev) => prev.filter(({ name }) => name !== item.name));
   };
 
   return (
-    <div className="mb-5">
-      <div className="flex flex-col gap-2">
-        <label className="block text-sm font-medium leading-6 ">
-          Select pokemon
-        </label>
-        <div
-          className={`flex items-center border border-gray-400 gap-1 w-[400px] h-10 rounded-lg py-2 px-4 relative
+    <>
+      <div className="mb-5">
+        <div className="flex flex-col gap-2">
+          <label className="block text-sm font-medium leading-6 ">
+            Select pokemon
+          </label>
+          <div className="flex gap-6">
+            <div
+              className={`flex items-center border border-gray-400 gap-1 w-[400px] h-10 rounded-lg py-2 px-4 relative cursor-pointer
           ${!disabled && 'hover:ring-2 hover:ring-indigo-500'}
           ${disabled && ' bg-slate-200 cursor-not-allowed'}
           ${errorSelect ? 'border-2 border-red-600' : 'border border-gray-400'}
         `}
-        >
-          <div className="flex gap-1 w-[330px] overflow-hidden">
-            {selectItem.map((item) => (
-              <Badge
-                key={item.name}
-                label={item.name}
-                handlerClick={() => handlerDeletePokemon(item)}
-              />
-            ))}
-          </div>
-
-          {!disabled && (
-            <svg
-              onClick={() => {
-                setSelectItem([]);
-                setErrorSelect('');
-              }}
-              className={`w-5 h-5 text-gray-700 absolute right-8 top-[10px] cursor-pointer`}
-            >
-              <use xlinkHref="./sprite.svg#close" />
-            </svg>
-          )}
-          {!disabled && (
-            <svg
               onClick={handlerFetchData}
-              className={`w-5 h-5 text-gray-700 absolute right-2 top-[10px] cursor-pointer`}
             >
-              <use xlinkHref="./sprite.svg#select" />
-            </svg>
-          )}
-        </div>
-        <p
-          className={`block text-gray-500 text-sm font-medium leading-6 
+              <div className="flex gap-1 w-[330px] overflow-hidden">
+                {selectItem.map((item) => (
+                  <Badge
+                    key={item.name}
+                    label={item.name}
+                    handlerClick={() => handleBadgeClick}
+                    handlerClickOnClose={() => handleBadgeClose(item)}
+                  />
+                ))}
+              </div>
+
+              {!disabled && selectItem.length > 0 && (
+                <svg
+                  onClick={() => {
+                    setSelectItem([]);
+                    setErrorSelect('');
+                  }}
+                  className={`w-5 h-5 text-gray-700 absolute right-8 top-[10px] cursor-pointer`}
+                >
+                  <use xlinkHref="./sprite.svg#close" />
+                </svg>
+              )}
+              {!disabled && (
+                <svg
+                  onClick={handlerFetchData}
+                  className={`w-5 h-5 text-gray-700 absolute right-2 top-[10px] cursor-pointer`}
+                >
+                  <use xlinkHref="./sprite.svg#select" />
+                </svg>
+              )}
+
+              <p
+                className={`block text-gray-500 text-sm font-medium leading-6 
           ${errorSelect && 'text-red-600'}
         `}
-        >
-          {errorSelect}
-        </p>
+              >
+                {errorSelect}
+              </p>
+            </div>
+
+            <div>
+              <Button
+                outline
+                size="lg"
+                onClick={() => setIsFilterModalOpen(true)}
+              >
+                <span>
+                  <svg className={`w-6 h-6 text-indigo-600 right-1 top-[7px]`}>
+                    <use xlinkHref="./sprite.svg#filter" />
+                  </svg>
+                </span>
+              </Button>
+            </div>
+          </div>
+        </div>
+        {pokemonList && (
+          <PokemonList
+            pokemonList={pokemonList}
+            addPokemon={handlerAddPokemon}
+          />
+        )}
       </div>
-      {pokemonList && (
-        <PokemonList pokemonList={pokemonList} addPokemon={handlerAddPokemon} />
+
+      {isFilterModalOpen && (
+        <FilterModal
+          setLimitItem={(count) => setLimitItem(count)}
+          setOffset={(page) => setOffset(page)}
+          onClose={() => setIsFilterModalOpen(false)}
+        />
       )}
-    </div>
+    </>
   );
 };
 
