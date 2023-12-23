@@ -85,16 +85,19 @@ const SelectComponent = ({
           <label className="block text-sm font-medium leading-6 ">
             Select pokemon
           </label>
-          <div className="flex gap-6">
+          <div className="flex flex-col gap-6 lg:flex-row relative">
             <div
-              className={`flex items-center border border-gray-400 gap-1 w-[400px] h-10 rounded-lg py-2 px-4 relative cursor-pointer
-          ${!disabled && 'hover:ring-2 hover:ring-indigo-500'}
-          ${disabled && ' bg-slate-200 cursor-not-allowed'}
-          ${errorSelect ? 'border-2 border-red-600' : 'border border-gray-400'}
-        `}
+              className={`flex  items-center border border-gray-400 gap-1 w-auto sm:w-[400px] h-10 rounded-lg py-2 px-4 relative cursor-pointer
+              ${!disabled && 'hover:ring-2 hover:ring-indigo-500'}
+             ${disabled && ' bg-slate-200 cursor-not-allowed'}
+              ${
+                errorSelect
+                  ? 'border-2 border-red-600'
+                  : 'border border-gray-400'
+              }`}
               onClick={handlerFetchData}
             >
-              <div className="flex gap-1 w-[330px] overflow-hidden">
+              <div className="flex gap-1 w-auto sm:w-[330px] mr-10 sm:mr-0 overflow-hidden">
                 {selectItem.map((item) => (
                   <Badge
                     key={item.name}
@@ -126,14 +129,12 @@ const SelectComponent = ({
               )}
 
               <p
-                className={`block text-gray-500 text-sm font-medium leading-6 
-          ${errorSelect && 'text-red-600'}
-        `}
+                className={`block text-gray-500 text-sm font-medium leading-6 absolute left-0 bottom-[-25px]
+                 ${errorSelect && 'text-red-600'}`}
               >
                 {errorSelect}
               </p>
             </div>
-
             <div>
               <Button
                 outline

@@ -58,7 +58,7 @@ const Form = () => {
           className="border-2 border-indigo-600 w-[70vw] h-auto rounded-xl p-5 gap-5"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="flex gap-5">
+          <div className="flex flex-col gap-5 xl:flex-row ">
             <Input
               id="name"
               errors={errors}

@@ -28,7 +28,7 @@ const SelectedPokemonModal = ({
   return (
     <>
       <Modal onClose={onClose}>
-        <div className="flex flex-col gap-4 relative w-[35vw] p-5">
+        <div className="flex flex-col gap-4 relative w-[70vw] lg:w-[35vw] p-5">
           <svg
             onClick={onClose}
             className={`w-8 h-8 text-black absolute right-2 top-2 block cursor-pointer 

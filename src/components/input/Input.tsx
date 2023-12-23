@@ -76,7 +76,7 @@ const Input = ({
           disabled={disabled}
           {...register(id, validationRules)}
           placeholder={placeholder}
-          className={`w-[400px] h-10 rounded-lg py-3 px-4 gap-2 
+          className={`w-full lg:w-[400px] h-10 rounded-lg py-3 px-4 gap-2 
           placeholder:text-gray-400 placeholder:text-sm 
           focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:border-none
           ${!disabled && 'hover:ring-2 hover:ring-indigo-500'}
