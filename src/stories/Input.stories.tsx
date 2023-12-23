@@ -13,7 +13,7 @@ export default meta;
 
 export const Default: StoryObj<typeof Input> = {
   args: {
-    register: () => {},
+    // register: () => {},
     id: 'name',
     errors: {},
     placeholder: 'Enter your name',
