@@ -19,8 +19,8 @@ const Badge = ({
     <div>
       <p
         onClick={handlerClick}
-        className={`relative inline-block bg-indigo-500 py-[2px] px-[10px] text-white text-lg text-center cursor-pointer rounded-xl ${
-          isHovered && !forViewing ? 'bg-indigo-600 pr-7' : ''
+        className={`relative inline-block bg-indigo-500 py-[2px] px-[10px] text-white text-lg text-center cursor-pointer rounded-xl hover:bg-indigo-600 ${
+          isHovered && !forViewing ? ' pr-7' : ''
         }`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

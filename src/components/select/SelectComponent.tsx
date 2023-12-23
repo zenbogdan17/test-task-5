@@ -53,7 +53,9 @@ const SelectComponent = ({
   };
 
   useEffect(() => {
-    handlerFetchData();
+    if (limitItem !== 20 || offset !== 0) {
+      handlerFetchData();
+    }
   }, [limitItem, offset]);
 
   const handlerAddPokemon = (item: PokemonType) => {
@@ -91,7 +93,9 @@ const SelectComponent = ({
             }`}
           >
             <div
-              className={`flex  items-center border border-gray-400 gap-1 w-auto sm:w-[400px] h-10 rounded-lg py-2 px-4 relative cursor-pointer
+              className={`flex  items-center border border-gray-400 gap-1 w-auto ${
+                selectItem.length > 3 ? 'sm:w-[480px]' : 'sm:w-[400px]'
+              }  h-10 rounded-lg py-2 px-4 relative cursor-pointer
               ${!disabled && 'hover:ring-2 hover:ring-indigo-500'}
              ${disabled && ' bg-slate-200 cursor-not-allowed'}
               ${
@@ -101,7 +105,11 @@ const SelectComponent = ({
               }`}
               onClick={handlerFetchData}
             >
-              <div className="flex gap-1 w-auto sm:w-[330px] mr-10 sm:mr-0 overflow-hidden">
+              <div
+                className={`flex gap-1 w-auto ${
+                  selectItem.length > 3 ? 'sm:w-[420px]' : 'sm:w-[330px]'
+                }  mr-10 sm:mr-0 overflow-hidden `}
+              >
                 {selectItem.map((item) => (
                   <Badge
                     key={item.name}

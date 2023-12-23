@@ -32,7 +32,7 @@ const ModalPokemonInfo = ({
 
   return (
     <Modal onClose={onClose}>
-      <div className="relative overflow-auto w-[70vw] lg:w-[50vw] p-5">
+      <div className="relative overflow-auto w-[80vw] lg:w-[50vw] p-5">
         <svg
           onClick={onClose}
           className={`w-8 h-8 text-black absolute right-2 top-2 block cursor-pointer 
