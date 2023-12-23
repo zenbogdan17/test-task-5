@@ -23,7 +23,7 @@ const PokemonList = ({ pokemonList, addPokemon }: PokemonListProps) => {
   };
 
   return (
-    <div className="flex gap-2 flex-wrap border-2 border-indigo-600 rounded-xl p-3 mt-4">
+    <div className="flex gap-2 flex-wrap border-2 border-indigo-600 rounded-xl p-3">
       {pokemonList?.results.map((item) => (
         <Badge
           key={item.name}

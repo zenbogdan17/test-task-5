@@ -85,7 +85,11 @@ const SelectComponent = ({
           <label className="block text-sm font-medium leading-6 ">
             Select pokemon
           </label>
-          <div className="flex flex-col gap-6 lg:flex-row relative">
+          <div
+            className={`flex flex-col gap-6 lg:flex-row relative mb-4 ${
+              errorSelect && 'mb-7'
+            }`}
+          >
             <div
               className={`flex  items-center border border-gray-400 gap-1 w-auto sm:w-[400px] h-10 rounded-lg py-2 px-4 relative cursor-pointer
               ${!disabled && 'hover:ring-2 hover:ring-indigo-500'}
